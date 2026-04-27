@@ -42,37 +42,39 @@ pdfjsLib.getDocument(url).promise
 
 console.log("PDF chargé :", pdf.numPages, "pages");
 
+const isMobile = window.innerWidth < 768;
+const scale = isMobile ? 1.8 : 3;
+
 for(let pageNum = 1; pageNum <= pdf.numPages; pageNum++){
 
 const page = await pdf.getPage(pageNum);
 
-const scale = 3;
 const viewport = page.getViewport({ scale });
-
-const canvas = document.createElement("canvas");
-document.body.appendChild(canvas);
-
-const context = canvas.getContext("2d");
 
 const dpr = window.devicePixelRatio || 1;
 
-canvas.width = viewport.width * dpr;
-canvas.height = viewport.height * dpr;
+const canvas = document.createElement("canvas");
+const context = canvas.getContext("2d");
+
+canvas.width = Math.floor(viewport.width * dpr);
+canvas.height = Math.floor(viewport.height * dpr);
 
 canvas.style.width = viewport.width + "px";
 canvas.style.height = viewport.height + "px";
 
-context.scale(dpr, dpr);
+context.setTransform(dpr, 0, 0, dpr, 0, 0);
 
 await page.render({
 canvasContext: context,
 viewport: viewport
 }).promise;
 
+await new Promise(r => setTimeout(r, 30));
+
 }
 
 })
-.catch(function(err){
+.catch(err => {
 console.error("PDF loading error:", err);
 });
 
