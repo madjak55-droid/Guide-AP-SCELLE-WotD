@@ -3,24 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scroll PDF</title>
+
+<title>PDF Scroll</title>
 
 <style>
 body{
 margin:0;
-background:#111;
+background:#0f0f0f;
 display:flex;
 flex-direction:column;
 align-items:center;
 }
 
 canvas{
-margin:0 auto 20px auto;
+margin:24px 0;
 max-width:100%;
 height:auto;
-box-shadow:0 0 20px rgba(0,0,0,.4);
+image-rendering:auto;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+border-radius:6px;
 }
 </style>
+
 </head>
 
 <body>
@@ -28,22 +32,32 @@ box-shadow:0 0 20px rgba(0,0,0,.4);
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
 <script>
-pdfjsLib.getDocument('Guide_AP_Scelle_Mobile.pdf').promise.then(function(pdf){
 
-for(let pageNum=1; pageNum<=pdf.numPages; pageNum++){
+const url = "mon-document.pdf";
+
+pdfjsLib.getDocument(url).promise.then(function(pdf){
+
+for(let pageNum = 1; pageNum <= pdf.numPages; pageNum++){
 
 pdf.getPage(pageNum).then(function(page){
 
-const scale = 1.8;
-const viewport = page.getViewport({scale});
+const scale = 3;
+const viewport = page.getViewport({ scale });
 
-const canvas = document.createElement('canvas');
+const canvas = document.createElement("canvas");
 document.body.appendChild(canvas);
 
-const context = canvas.getContext('2d');
+const context = canvas.getContext("2d");
 
-canvas.width = viewport.width;
-canvas.height = viewport.height;
+const dpr = window.devicePixelRatio || 1;
+
+canvas.width = viewport.width * dpr;
+canvas.height = viewport.height * dpr;
+
+canvas.style.width = viewport.width + "px";
+canvas.style.height = viewport.height + "px";
+
+context.scale(dpr, dpr);
 
 page.render({
 canvasContext: context,
@@ -55,6 +69,7 @@ viewport: viewport
 }
 
 });
+
 </script>
 
 </body>
