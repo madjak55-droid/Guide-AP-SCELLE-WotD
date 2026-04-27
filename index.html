@@ -24,7 +24,6 @@ box-shadow:0 10px 30px rgba(0,0,0,0.4);
 border-radius:6px;
 }
 </style>
-
 </head>
 
 <body>
@@ -32,8 +31,10 @@ border-radius:6px;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
 <script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-const url = "mon-document.pdf";
+const url = "Guide_AP_Scelle_Mobile.pdf";
 
 pdfjsLib.getDocument(url).promise.then(function(pdf){
 
@@ -41,7 +42,7 @@ for(let pageNum = 1; pageNum <= pdf.numPages; pageNum++){
 
 pdf.getPage(pageNum).then(function(page){
 
-const scale = 3;
+const scale = 3; // 🔥 haute résolution
 const viewport = page.getViewport({ scale });
 
 const canvas = document.createElement("canvas");
@@ -68,6 +69,8 @@ viewport: viewport
 
 }
 
+}).catch(function(err){
+console.error("PDF loading error:", err);
 });
 
 </script>
