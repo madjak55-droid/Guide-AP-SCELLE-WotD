@@ -2,91 +2,76 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1, maximum-scale=3">
 
 <title>Document</title>
 
 <style>
-:root{
-  --bg:#0a0a0a;
-}
 
-html,body{
+html, body{
 margin:0;
 padding:0;
-background:var(--bg);
-height:100%;
+width:100%;
+overflow-x:hidden;
+background:#0a0a0a;
 }
 
 body{
-display:flex;
-justify-content:center;
-font-family:system-ui, -apple-system, sans-serif;
-overflow-x:hidden;
-}
-
-/* container */
-.wrapper{
-width:100%;
-max-width:1100px;
-padding:32px 16px 80px;
-}
-
-/* image principale */
-img{
-width:100%;
-height:auto;
 display:block;
+-webkit-text-size-adjust:100%;
+}
 
-border-radius:12px;
-box-shadow:0 25px 80px rgba(0,0,0,0.65);
+/* conteneur full bleed */
+.wrapper{
+width:100vw;
+max-width:none;
+padding:0;
+margin:0;
+overflow:hidden;
+}
 
-transform:translateZ(0);
-will-change:transform;
+/* image plein écran */
+img{
+display:block;
+width:100vw;
+height:auto;
 
-/* net sur retina */
-image-rendering:auto;
+margin:0;
+padding:0;
+
+border-radius:0;
+box-shadow:none;
 
 user-select:none;
 -webkit-user-drag:none;
 
-/* zoom fluide mobile */
-touch-action:manipulation;
+touch-action:pan-y pinch-zoom;
+
+transform:translateZ(0);
+
+/* améliore netteté perçue */
+image-rendering:auto;
+
+/* léger boost lisibilité */
+filter:
+contrast(1.05)
+brightness(1.01);
 }
 
-/* confort mobile */
-@media (max-width:768px){
-.wrapper{
-padding:16px 10px 60px;
+/* sécurité débordements */
+*{
+box-sizing:border-box;
 }
 
-img{
-border-radius:8px;
-box-shadow:0 15px 40px rgba(0,0,0,0.55);
-}
-}
-
-/* petite animation d’entrée (studio feel) */
-body{
-animation:fadeIn 0.6s ease-out;
-}
-
-@keyframes fadeIn{
-from{opacity:0}
-to{opacity:1}
-}
-
-/* scroll plus smooth */
-html{
-scroll-behavior:smooth;
-}
 </style>
 </head>
 
 <body>
 
 <div class="wrapper">
-<img src="Guide AP Paquet scellé WotD.png" alt="document">
+<img src="document.png" alt="document">
 </div>
 
 </body>
