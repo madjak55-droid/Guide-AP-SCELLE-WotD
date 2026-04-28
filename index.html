@@ -2,83 +2,92 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
 
-<title>PDF Scroll</title>
+<title>Document</title>
 
 <style>
-body{
-margin:0;
-background:#0f0f0f;
-display:flex;
-flex-direction:column;
-align-items:center;
+:root{
+  --bg:#0a0a0a;
 }
 
-canvas{
-margin:24px 0;
-max-width:100%;
+html,body{
+margin:0;
+padding:0;
+background:var(--bg);
+height:100%;
+}
+
+body{
+display:flex;
+justify-content:center;
+font-family:system-ui, -apple-system, sans-serif;
+overflow-x:hidden;
+}
+
+/* container */
+.wrapper{
+width:100%;
+max-width:1100px;
+padding:32px 16px 80px;
+}
+
+/* image principale */
+img{
+width:100%;
 height:auto;
+display:block;
+
+border-radius:12px;
+box-shadow:0 25px 80px rgba(0,0,0,0.65);
+
+transform:translateZ(0);
+will-change:transform;
+
+/* net sur retina */
 image-rendering:auto;
-box-shadow:0 10px 30px rgba(0,0,0,0.4);
-border-radius:6px;
+
+user-select:none;
+-webkit-user-drag:none;
+
+/* zoom fluide mobile */
+touch-action:manipulation;
+}
+
+/* confort mobile */
+@media (max-width:768px){
+.wrapper{
+padding:16px 10px 60px;
+}
+
+img{
+border-radius:8px;
+box-shadow:0 15px 40px rgba(0,0,0,0.55);
+}
+}
+
+/* petite animation d’entrée (studio feel) */
+body{
+animation:fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn{
+from{opacity:0}
+to{opacity:1}
+}
+
+/* scroll plus smooth */
+html{
+scroll-behavior:smooth;
 }
 </style>
 </head>
 
 <body>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
-<script>
-
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-"https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
-
-const url = "Guide_AP_Scelle_Mobile.pdf";
-
-pdfjsLib.getDocument(url).promise
-.then(async function(pdf){
-
-console.log("PDF chargé :", pdf.numPages, "pages");
-
-const isMobile = window.innerWidth < 768;
-const scale = isMobile ? 1.8 : 3;
-
-for(let pageNum = 1; pageNum <= pdf.numPages; pageNum++){
-
-const page = await pdf.getPage(pageNum);
-
-const viewport = page.getViewport({ scale });
-
-const dpr = window.devicePixelRatio || 1;
-
-const canvas = document.createElement("canvas");
-const context = canvas.getContext("2d");
-
-canvas.width = Math.floor(viewport.width * dpr);
-canvas.height = Math.floor(viewport.height * dpr);
-
-canvas.style.width = viewport.width + "px";
-canvas.style.height = viewport.height + "px";
-
-context.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-await page.render({
-canvasContext: context,
-viewport: viewport
-}).promise;
-
-await new Promise(r => setTimeout(r, 30));
-
-}
-
-})
-.catch(err => {
-console.error("PDF loading error:", err);
-});
-
-</script>
+<div class="wrapper">
+<img src="Guide AP Paquet scellé WotD.jpg" alt="document">
+</div>
 
 </body>
 </html>
